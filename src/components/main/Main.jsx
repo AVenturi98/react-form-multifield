@@ -7,18 +7,8 @@ const initialFormData = {
     title: '',
     image: undefined,
     content: '',
-    tags: [{
-        'Horror': false,
-        'Fantasy': false,
-        'Thriller': false,
-        'Sci-fi': false,
-        'Animazione': false,
-        'Mistero': false,
-        'True Story': false,
-        'Crime': false,
-        'Commedia': false,
-        'Documentario': false
-    }],
+    tags: [],
+    category: '',
     published: true
 }
 
@@ -28,10 +18,10 @@ export default function mainSection() {
 
     const [formData, setFormData] = useState(initialFormData)
 
-    function handleFomrData(e) {
+    function handleFormData(e) {
 
         // console.log(e.target.name, e.target.value)
-        console.log(e.target.type, e.target.checked)
+        // console.log(e.target.type, e.target.checked)
 
         const key = e.target.name
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
@@ -40,40 +30,30 @@ export default function mainSection() {
             ...formData,
             [key]: value
         }
-        console.log(key)
+        // console.log(key)
 
         setFormData(newFormData)
 
         // console.log(newFormData)
     }
 
-    // function tagFilter(e) {
-    //     console.log(e.target.type, e.target.checked)
-
-    //     const key = e.target.name
-    //     const value = e.target.value
-
-    //     const tagFiltered = {
-    //         [key]: value
-    //     }
-
-    //     if (tagFiltered === true) return
-
-    //     setFormData(tagFiltered)
-    // }
-
     useEffect(() => {
-        console.log('Ho usato useEffect')
-    }, [formData.tags.map((tag) => tag)])
+
+        if (!formData.published) {
+            alert(`Hai reso il tuo post PRIVATO`)
+        }
+    }, [formData.published])
 
     function addFilm(event) {
         event.preventDefault()
 
-        if (formData.title === '' || formData.content === '') return alert('Devi compilare tutti i campi')
+        // if (formData.title === '' || formData.content === '') return alert('Devi compilare tutti i campi')
+
+        if (posts.published === false) return setPostsFilm(posts.filter(el => el !== posts))
 
         const newPost = {
             id: Date.now(),
-            ...formData
+            ...formData,
         }
 
         setPostsFilm([...posts, newPost])
@@ -89,7 +69,6 @@ export default function mainSection() {
         setPostsFilm(posts.filter(el => el !== post))
     }
 
-
     return (
         <>
             <div className="container">
@@ -102,64 +81,35 @@ export default function mainSection() {
 
                             <div className='formData'>
                                 <label htmlFor="title" className='formIT' >Titolo</label>
-                                <input id='title' name='title' onChange={handleFomrData} value={formData.title} type="text" placeholder='Inserisci il titolo' className='formControll' />
+                                <input id='title' name='title' onChange={handleFormData} value={formData.title} type="text" placeholder='Inserisci il titolo' className='formControll' />
                             </div>
                             <div className='formData'>
                                 <label htmlFor="content" className='formIT'>Contenuto</label>
-                                <input id='content' name='content' onChange={handleFomrData} value={formData.content} type="text" placeholder='Inserisci un contenuto..' className='formControll' />
+                                <textarea id='content' name='content' onChange={handleFormData} value={formData.content} type="text" placeholder='Inserisci un contenuto..' className='formControll text_area' />
                             </div>
-                            <ul>
-                                {/* {formData.tags.map((post) =>
-                                    <li>
-                                        <input onChange={handleFomrData} checked={formData.tags} name='tags' id="tag" type="checkbox" />
-                                        <label htmlFor="tag" className='formIT formDataCheck' >{post}</label>
-                                    </li>
-                                )} */}
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Horror' id="horror" type="checkbox" />
-                                    <label htmlFor="horror" className='formIT formDataCheck'>Horror</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Fantasy' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Fantasy</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Thriller' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Thriller</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Sci-fi' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Sci-fi</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Animazione' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Animazione</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Mistero' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Mistero</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='True Story' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >True Story</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Crime' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Crime</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Commedia' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Commedia</label>
-                                </li>
-                                <li>
-                                    <input onChange={handleFomrData} checked={formData.tags} name='Documentario' id="tag" type="checkbox" />
-                                    <label htmlFor="tag" className='formIT formDataCheck' >Documentario</label>
-                                </li>
-                            </ul>
+                            <div className='formData'>
+                                <label htmlFor="img"><strong>Inserisci un immagine</strong></label>
+                                <input type="img" id='img' placeholder='http://' className='formControll' />
+                            </div>
+                            <div className='formData'>
+                                <label htmlFor="category" className='formIT'>Categoria</label>
+                                <select name="category" id="category" className='formControll selction' onChange={handleFormData}>
+                                    <option value="">Scegli la categoria</option>
+                                    <option value="html">html</option>
+                                    <option value="js">js</option>
+                                    <option value="css">css</option>
+                                </select>
+                            </div>
+                            <div className='formData'>
+                                <label htmlFor="tags" className='formIT'>Tags</label>
+                                <input type="text" id='tags' onChange={handleFormData} placeholder='Digita i tags..' className='formControll' />
+                            </div>
                             <div>
-                                <input onChange={handleFomrData} checked={formData.published} name='published' id="avaible" type="checkbox" />
-                                <label htmlFor="avaible" className='formIT formDataCheck' >Disponilità</label>
+                                <p><strong>{formData.published && 'Deseleziona per rendere privato' || 'Seleziona per rendere pubblico'} il nuovo post</strong></p><br />
+                                <input type="checkbox" id='avaible' name='published' onChange={handleFormData} checked={formData.published} />
+                                <label htmlFor="avaible" className='formIT formDataCheck' >{formData.published && 'Pubblico' || 'Privato'}</label>
                             </div>
+                            <br />
                             <input type="submit" value="Aggiungi" id='button_form' />
                         </form>
 
@@ -168,15 +118,15 @@ export default function mainSection() {
                     </div>
                     {posts.map((post) =>
                         <div key={post.id} className="col-6">
-                            <Card callBack={() => deletePost(post)} title={post.title} content={post.content} tags={post.tags} published={post.published} image={post.image} />
+                            <Card callBack={() => deletePost(post)} title={post.title} content={post.content} tags={post.tags} published={post.published !== false} image={post.image} />
                         </div>)}
-                </div>
+                </div >
                 <div className="container">
                     <ul className="row">
                         <Tags />
                     </ul>
                 </div>
-            </div>
+            </div >
         </>
 
     )

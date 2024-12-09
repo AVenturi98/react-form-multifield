@@ -1,7 +1,7 @@
 import style from './Card.module.css'
 import imageDefault from '../../assets/31343C.svg'
 
-function Card({ title = '', content = '', tags = '', published, image, callBack = () => { } }) {
+function Card({ title = '', content = '', tags = [], published, image, callBack = () => { } }) {
 
     const elementTags = tags.map((tag, elmnTag, className) => {
 
@@ -19,7 +19,7 @@ function Card({ title = '', content = '', tags = '', published, image, callBack 
 
     return (
         <>
-            {published &&
+            {published !== false ?
                 <main className="container">
                     <div className={style.card}>
                         <div className={style.cardImg}>
@@ -35,7 +35,9 @@ function Card({ title = '', content = '', tags = '', published, image, callBack 
                             </div>
                         </div>
                     </div >
-                </main >}
+                </main > :
+                <div className={style.dNone} />
+            }
         </>
     )
 }

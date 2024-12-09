@@ -72,9 +72,7 @@ ul {
     padding: 1.5rem
 }
 
-form {
-    display: flex;
-    gap: 10px;
+form>* {
     margin-top: 1rem;
 }
 
@@ -130,4 +128,19 @@ button {
 .formControll {
     border: none;
     background-color: rgb(236, 234, 234);
+}
+
+.text_area {
+    padding: 0.5rem 1.5rem 1.5rem 0.5rem;
+    border-radius: 10px;
+}
+
+.selction {
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.tags_flex {
+    display: flex;
+    flex-wrap: wrap;
 }
